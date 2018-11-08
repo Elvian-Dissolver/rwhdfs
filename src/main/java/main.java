@@ -9,9 +9,9 @@ public class main {
         String hadoopPath = "your-hadoop-path";
         hdfs HDFS = new hdfs(hadoopPath );
 
-        //HDFS.read();
+        HDFS.read();
         //HDFS.write();
-        HDFS.copyFromLocal();
+        //HDFS.copyFromLocal();
 
     }
 }

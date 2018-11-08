@@ -18,11 +18,15 @@ public class hdfs {
 
     public hdfs(String hadoopPath){
         this.hadoopPath = hadoopPath;
-        this.init();
+        //this.init();
     }
 
     protected void init(){
-        conf = new Configuration();
+        conf = new Configuration(false);
+        conf.set("fs.defaultFS", "hdfs://localhost:9000");
+        conf.set("fs.default.name", conf.get("fs.defaultFS"));
+        conf.set("dfs.nameservices", "hdfs");
+        conf.set("dfs.nameservice.id", "hdfs");
         conf.addResource(new Path("/usr/local/hadoop/etc/hadoop/core-site.xml"));
         conf.addResource(new Path("/usr/local/hadoop/etc/hadoop/hdfs-site.xml"));
 
@@ -36,12 +40,20 @@ public class hdfs {
     }
 
     public void read() throws IOException {
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Enter the file path...");
         String filePath = br.readLine();
 
+        conf = new Configuration();
+        conf.set("fs.defaultFS", "hdfs://localhost:9000");
+        //conf.set("fs.default.name", conf.get("fs.defaultFS"));
+
+//        conf.addResource(new Path("/usr/local/hadoop-3.1.1/etc/hadoop/core-site.xml")); // Replace with actual path
+//        conf.addResource(new Path("/usr/local/hadoop-3.1.1/etc/hadoop/hdfs-site.xml"));
+
         Path path = new Path(filePath);
-        //FileSystem fs = path.getFileSystem(conf);
+        FileSystem fs = path.getFileSystem(conf);
 
         FSDataInputStream inputStream = fs.open(path);
         System.out.println(inputStream.available());
